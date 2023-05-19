@@ -1,47 +1,20 @@
 const express = require("express");
-const ProductManager = require('./ProductManager.js');
+
+const { productsRouter } = require("./src/routes/products.routes.js");
+const { cartsRouter } = require("./src/routes/carts.routes.js");
+
 const app = express();
-
-const port = 3000;
-
-const pm = new ProductManager("./products.json");
+const port = 8080;
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get("/products", (req, res) => {
-  const limit = parseInt(req.query.limit);
-  const finalProducts = [];
-  let products = pm.getAllProducts();
+// Products API endpoints
+app.use("/api/products", productsRouter);
 
-  for (let i = 0; i < limit; i++) {
-    if(i < products.length){
-      finalProducts.push(products[i]);
-    } 
-  }
-  
-  res.send(finalProducts)
-  
-});
-
-
-app.get('/products/:id', (req, res) => {
-  const productId = parseInt(req.params.id);
-  try{
-
-    const producto = pm.getProductById(productId);
-    res.send(producto);
-  }
-  catch(error){
-
-    res.status(404).send({ errorMessage: error });
-  }
-
-});
-
-
+// Carts API endpoints
+app.use("/api/carts", cartsRouter);
 
 app.listen(port, () => {
-
-  console.log(`Example app listening on port http://localhost:${port}`);
-
+	console.log(`Server running in http://localhost:${port}`);
 });

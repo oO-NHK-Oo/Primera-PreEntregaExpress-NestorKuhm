@@ -1,0 +1,32 @@
+[
+	{
+		"title": "Mortal kombat",
+		"description": "lucha por ser el mejor",
+		"price": 5000,
+		"code": "Mk11",
+		"stock": 10,
+		"status": true,
+		"category": "Lucha",
+		"id": "0bd048ce-fa57-4734-b7b9-08557bb949ee"
+	},
+	{
+		"title": "Call of duty",
+		"description": "preparate para la guerra",
+		"price": 3000,
+		"code": "cod123",
+		"stock": 50,
+		"status": true,
+		"category": "Disparos",
+		"id": "f8b62ab7-0a2f-477f-a501-f3b98344d450"
+	},
+	{
+		"title": "Stray",
+		"description": "entrate a un mundo sombrio",
+		"price": 200,
+		"code": "gato123",
+		"stock": 20,
+		"status": true,
+		"category": "Aventuras",
+		"id": "366ff2ea-5d25-4a4a-aa97-1da788744383"
+	}
+]
