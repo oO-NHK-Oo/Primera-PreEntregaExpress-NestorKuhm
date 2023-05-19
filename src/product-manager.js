@@ -4,19 +4,19 @@ const { v4 } = require("uuid");
 class ProductManager {
 	#products;
 	#path;
-	constructor(aPath) {
+	constructor(Path) {
 		this.#products = [];
-		this.productsWereModified = true; // With this flag now i know when a resource is updated or not. Now i can cache products if they are not modified and return in memory products instead the persisted ones in the products.json file
-		this.#path = aPath;
+		this.productsWereModified = true; 
+		this.#path = Path;
 
 
-		// In this point i must initialize the file to avoid problems... by the way i put some validations about this
+		
 		if (!fs.existsSync(this.#path)) {
 			fs.writeFileSync(this.#path, "[]");
 		}
 	}
 	async addProduct(Product) {
-		// Validate the input data
+		
 
 		if (!Product.title) {
 			throw new Error("Title field invalid");
@@ -34,17 +34,17 @@ class ProductManager {
 			throw new Error("Stock field invalid");
 		}
 
-		// If there isnt a file were store then one is created
+		
 		if (!fs.existsSync(this.#path)) {
 			await fs.promises.writeFile(this.#path, "[]");
 		}
 
-		// Check if a product with the same code exists
+		
 		const product = JSON.parse(
 			await fs.promises.readFile(this.#path, "utf-8")
 		).find((product) => product.code === Product.code);
 
-		// If a product is found with the same code that means that exists a product with the same code... then an Error is raised
+		
 		if (product) {
 			throw new Error("There is a product with the same code");
 		}
@@ -70,7 +70,7 @@ class ProductManager {
 			throw new Error("There isnt exists the file were products are stored");
 		}
 		let products = JSON.parse(await fs.promises.readFile(this.#path, "utf-8"));
-		this.#products = products; // Cache the new ones readed
+		this.#products = products; 
 		return products;
 	}
 	async getProductById(anId) {
@@ -89,7 +89,7 @@ class ProductManager {
 		product = products.find((product) => product.id.includes(anId));
 		if (!product) throw new Error("Product doesnt exists");
 
-		this.#products = products; // Cache the new ones readed
+		this.#products = products; 
 		this.productsWereModified = false;
 		return product;
 	}
@@ -98,17 +98,17 @@ class ProductManager {
 			throw new Error("There isnt exists the file were products are stored");
 		}
 
-		// First obtein the product
+		
 		let products = JSON.parse(await fs.promises.readFile(this.#path, "utf-8"));
 		let product = products.find((product) => product.id.includes(anId));
 
-		// Second update it
+		
 		product = { ...product, ...productUpdated };
 
-		// Third delete the old product, so, we remove it from products
+		
 
 		products = products.filter((product) => !product.id.includes(anId));
-		// Four store it
+		
 		products.push(product);
 		await fs.promises.writeFile(this.#path, JSON.stringify(products));
 
@@ -116,38 +116,38 @@ class ProductManager {
 
 		return product;
 	}
-	async deleteProduct(anId) {
+	async deleteProduct(Id) {
 		if (!fs.existsSync(this.#path)) {
 			throw new Error("There isnt exists the file were products are stored");
 		}
 
 		let products = JSON.parse(await fs.promises.readFile(this.#path, "utf-8"));
 
-		let productToDelete = products.find((product) => product.id.includes(anId));
+		let productToDelete = products.find((product) => product.id.includes(Id));
 
 		if (!productToDelete) {
 			throw new Error(
-				`Cannot delete a product. Doesnt exists a product with id ${anId}`
+				`Cannot delete a product. Doesnt exists a product with id ${Id}`
 			);
 		}
-		products = products.filter((product) => !product.id.includes(anId));
+		products = products.filter((product) => !product.id.includes(Id));
 		await fs.promises.writeFile(this.#path, JSON.stringify(products));
 
 		this.productsWereModified = true;
-		return anId;
+		return Id;
 	}
-	existsProductWithID(aProductID) {
+	existsProductWithID(ProductID) {
 		let result;
 
 		if (this.productsWereModified) {
 			let products = fs.readFileSync(this.#path, "utf-8");
-			result = products.some((product) => product.id.includes(aProductID));
+			result = products.some((product) => product.id.includes(ProductID));
 
 			this.#products = products;
 			this.productsWereModified = false;
 		} else {
 			result = this.#products.some((product) =>
-				product.id.includes(aProductID)
+				product.id.includes(ProductID)
 			);
 		}
 		if (!result) throw new Error("Search of product by id result in undefined");

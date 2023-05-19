@@ -10,7 +10,7 @@ productsRouter.get("/", async (req, res) => {
 	if (req.query.limit < 1) {
 		return res
 			.status(400)
-			.send({ message: "Invalid limit, must be greater than zero" });
+			.send({ message: "Límite no válido, debe ser mayor que cero" });
 	}
 
 	let limit = req.query.limit;
@@ -18,7 +18,7 @@ productsRouter.get("/", async (req, res) => {
 	let productsRequested = [];
 
 	if (limit) {
-		// if the limit exceeds the number of products the limit is equal to that number. I did this to avoid nulls in the productsRequested due to the for loop
+		
 		if (limit > allProducts.length) {
 			limit = allProducts.length;
 		}
@@ -39,7 +39,7 @@ productsRouter.get("/:pid", async (req, res) => {
 		res.status(200).send({ product: product });
 	} catch (error) {
 		res.status(404).send({
-			message: `Product with id ${pid} doesnt exists`,
+			message: `El producto con el id ${pid} no existe`,
 			info: error.message,
 		});
 	}
@@ -52,12 +52,12 @@ productsRouter.post("/", async (req, res) => {
 		validateDataFromProduct(newProduct);
 		let idNewProduct = await productManager.addProduct(newProduct);
 		res.status(200).send({
-			message: "Product added successfully",
+			message: "Producto añadido con éxito",
 			idAssigned: idNewProduct,
 		});
 	} catch (error) {
 		res.status(500).send({
-			message: "Oops something goes wrong ...",
+			message: "Lo siento ah ocurrido un error..",
 			details: error.message,
 		});
 	}
@@ -68,7 +68,7 @@ productsRouter.put("/:pid", async (req, res) => {
 	if (req.body.id) {
 		return res
 			.status(400)
-			.send({ message: "The product id cannot be modified" });
+			.send({ message: "El id del producto no se puede modificar." });
 	}
 
 	try {
@@ -77,9 +77,9 @@ productsRouter.put("/:pid", async (req, res) => {
 			req.params.pid,
 			newProductInfo
 		);
-		res.status(200).send({ message: "Product Updated", product: product });
+		res.status(200).send({ message: "Producto actualizado", product: product });
 	} catch (error) {
-		res.status(500).send({ message: "Oops, something went wrong ..." });
+		res.status(500).send({ message: "Lo siento ah ocurrido un error.." });
 	}
 	return;
 });
@@ -87,11 +87,11 @@ productsRouter.put("/:pid", async (req, res) => {
 productsRouter.delete("/:pid", async (req, res) => {
 	try {
 		let idDeleted = await productManager.deleteProduct(req.params.pid);
-		res.status(200).send({ message: `Product with id ${idDeleted} deleted` });
+		res.status(200).send({ message: `Producto con el id ${idDeleted} eliminado` });
 	} catch (error) {
 		res
 			.status(500)
-			.send({ message: "Oops, something went wrong ...", error: error });
+			.send({ message: "Lo siento ah ocurrido un error", error: error });
 	}
 	return;
 });

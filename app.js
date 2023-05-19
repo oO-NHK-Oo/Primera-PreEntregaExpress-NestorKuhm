@@ -9,11 +9,13 @@ const port = 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Products API endpoints
+//  API endpoints
+
 app.use("/api/products", productsRouter);
 
-// Carts API endpoints
 app.use("/api/carts", cartsRouter);
+
+//  API endpoints
 
 app.listen(port, () => {
 	console.log(`Server running in http://localhost:${port}`);

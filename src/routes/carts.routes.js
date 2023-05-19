@@ -12,12 +12,12 @@ cartsRouter.post("/", (req, res) => {
 	try {
 		cartsManager.addCart(newCart);
 		return res.status(200).send({
-			message: "New empty cart generated successfully",
+			message: "Nuevo carrito vacío generado con éxito",
 			cartId: newCart.id,
 			currentProducts: [],
 		});
 	} catch (error) {
-		return res.status(500).send({ message: "Oops, something went wrong ... " });
+		return res.status(500).send({ message: "Lo siento ah ocurrido un error " });
 	}
 });
 
@@ -26,14 +26,14 @@ cartsRouter.get("/:cid", (req, res) => {
 	const cartID = req.params.cid;
 
 	if (!cartID) {
-		res.status(400).send({ message: "Cart id not found in request" });
+		res.status(400).send({ message: "ID de carrito no encontrado" });
 	}
 
 	try {
 		products = cartsManager.productsOnCartById(cartID);
 		return res
 			.status(200)
-			.send({ message: "Products queried successfully", products: products });
+			.send({ message: "Productos consultados con éxito", products: products });
 	} catch (error) {
 		return res.status(500).send({ message: error.message });
 	}
@@ -47,7 +47,7 @@ cartsRouter.post("/:cid/product/:pid", (req, res) => {
 
 		return res
 			.status(200)
-			.send({ message: `Product with id ${pid} added to cart with id ${cid}` });
+			.send({ message: `Producto con el id ${pid} agregado al carrito con id ${cid}` });
 	} catch (error) {
 		return res.status(400).send({ message: error.message });
 	}
