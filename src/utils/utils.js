@@ -1,3 +1,12 @@
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
+
+
 function validateDataFromProduct(product) {
 	if (!product.title) {
 		throw new Error("Missing title information");
@@ -23,3 +32,5 @@ function validateDataFromProduct(product) {
 }
 
 module.exports = validateDataFromProduct;
+
+export default __dirname;
